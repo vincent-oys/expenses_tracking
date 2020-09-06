@@ -1,14 +1,16 @@
 const sha256 = require("js-sha256");
+let salt = sha256("I am awesome");
 
 module.exports = (db) => {
   let welcome = (req, res) => {
-    // if (req.cookies.loggedIn === "true") {
-    //   // res.send("WORKING")
-    //   res.redirect(`tweed/${req.cookies.username}`);
-    // } else {
-    //   res.render("users/homepage");
-    // }
-    res.render("users/homepage");
+    console.log(req.cookies)
+    if (!req.cookies.loggedIn) {
+      res.render("users/homepage");
+    } else {
+      if (req.cookies.loggedIn === `${sha256(req.cookies.username)}-${salt}`) {
+        res.redirect(`tracker/${req.cookies.username}`)
+      }
+    }
   };
 
   let loginPage = (req, res) => {
@@ -18,9 +20,9 @@ module.exports = (db) => {
   };
 
   let login = (req, res) => {
-    let returnInfo = req.body;
-    let username = returnInfo.username;
-    let password = returnInfo.password;
+    let { username, password } = req.body;
+    password = sha256(password);
+
     db.users.userLogin(username, password, (err, result) => {
       if (err) {
         console.log("-- Error in login controller", err.message);
@@ -30,10 +32,9 @@ module.exports = (db) => {
         } else if (result === "wrong password") {
           res.send("Wrong Password!");
         } else {
-          //   res.cookie("username", result.username);
-          //   res.cookie("loggedIn", true);
-          //   res.redirect(`tweed/${result.username}`);
-          res.send("login success");
+          res.cookie("username", result.username);
+          res.cookie("loggedIn", `${sha256(result.username)}-${salt}`);
+          res.redirect(`tracker/${result.username}`);
         }
       }
     });
@@ -44,17 +45,17 @@ module.exports = (db) => {
   };
 
   let postSignup = (req, res) => {
-    let returnInfo = req.body;
-    let username = returnInfo.username;
-    let password = returnInfo.password;
-    // let password = sha256(returnInfo.password);
+    let { username, password } = req.body;
+    password = sha256(password);
     let values = [username, password];
 
     db.users.register(values, (err, result) => {
       if (err) {
         console.log("-- Error in postSignup controller", err.message);
       } else {
-        console.log(result);
+        res.cookie("username", result.username);
+        res.cookie("loggedIn", `${sha256(result.username)}-${salt}`);
+        res.redirect(`tracker/${result.username}`);
       }
     });
   };

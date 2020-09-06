@@ -1,35 +1,44 @@
 const { v4: uuidv4 } = require('uuid');
+const sha256 = require("js-sha256");
+let salt = sha256("I am awesome");
 
 module.exports = (db) => {
 
     let main = (req, res) => {
-        // res.render("tracker/main")
+        let values = [req.params.user]
 
-        db.tracker.showAll((err, result) => {
-            if (err) {
-                console.log("-- Error in main controller", err.message);
-            } else {
-                res.render("tracker/main", result)
-            }
-        })
+        if (req.cookies.username === req.params.user && req.cookies.loggedIn === `${sha256(req.cookies.username)}-${salt}`) {
+            db.tracker.showAll(values, (err, result) => {
+                if (err) {
+                    console.log("-- Error in main controller", err.message);
+                } else {
+                    result.username = req.params.user;
+                    res.render("tracker/main", result)
+                }
+            });
+        } else {
+            res.redirect("/");
+        }
     }
+
 
     let postExpense = (req, res) => {
         let returnInfo = req.body;
-        // let user = req.params.user;
+        let user = [req.params.user];
         let date = returnInfo.date;
         let income = returnInfo.income || 0;
         let expense = returnInfo.expense || 0;
         let description = returnInfo.description || "-";
         let uuid = uuidv4()
-        let values = [1, date, income, expense, description, uuid];
+        let values = [date, income, expense, description, uuid];
 
-        db.tracker.addExpense(values, (err, result) => {
+        db.tracker.addExpense(values, user, (err, result) => {
             if (err) {
                 console.log("-- Error in postExpense controller", err.message);
             } else {
-                console.log(result)
-                res.send("expenses added")
+                if (result === true) {
+                    res.redirect(`/tracker/${req.params.user}`)
+                }
             }
         })
     }
@@ -68,12 +77,17 @@ module.exports = (db) => {
 
     }
 
+    let getSingle = (req, res) => {
+
+    }
+
 
     return {
         main,
         postExpense,
         putExpense,
-        deleteExpense
+        deleteExpense,
+        getSingle
     }
 
 }

@@ -28,7 +28,7 @@ module.exports = (dbPoolInstance) => {
       if (queryErr) {
         console.log("-- Error in register model", queryErr.message);
       } else {
-        callback(null, queryResult);
+        callback(null, queryResult.rows[0]);
       }
     });
   };

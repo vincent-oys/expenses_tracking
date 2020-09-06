@@ -10,8 +10,9 @@ module.exports = (app, allModels) => {
   app.get("/signup", usersControllerCallbacks.getSignup);
   app.post("/signup", usersControllerCallbacks.postSignup);
 
-  app.get("/tracker", trackerControllerCallbacks.main);
-  app.post("/tracker", trackerControllerCallbacks.postExpense);
+  app.get("/tracker/:user", trackerControllerCallbacks.main);
+  app.post("/tracker/:user", trackerControllerCallbacks.postExpense);
+  app.get("/tracker/:id", trackerControllerCallbacks.getSingle);
   app.put("/tracker/:id", trackerControllerCallbacks.putExpense);
   app.delete("/tracker/:id", trackerControllerCallbacks.deleteExpense);
 };

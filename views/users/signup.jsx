@@ -9,22 +9,10 @@ class Signup extends React.Component {
           <div>
             <form method="POST" action="/signup">
               Username:{" "}
-              <input
-                type="text"
-                placeholder="Enter Username"
-                name="username"
-                id=""
-                required
-              />
+              <input type="text" placeholder="Enter Username" name="username" required />
               <br />
               Password:{" "}
-              <input
-                type="password"
-                placeholder="Enter Password"
-                name="password"
-                id=""
-                required
-              />
+              <input type="password" placeholder="Enter Password" name="password" required />
               <br />
               <input type="submit" value="Signup" />
             </form>
