@@ -7,22 +7,26 @@ class Main extends React.Component {
         let info = this.props.rows;
 
         let expenseInfo = info.map((info, index) => {
-            info["tempId"] = index + 1;
+            info.tempId = index + 1;
+            // info.currentUser = user;
             return info
         })
 
         let show = expenseInfo.map((info, index) => {
             return <tr key={`${index + 1}`}>
-                <td>{index + 1}</td>
-                <td>{info.date}</td>
-                <td>{info.income}</td>
-                <td>{info.expense}</td>
-                <td>{info.description}</td>
+                <td><a href={`http://localhost:3000/tracker/${user}/${info.tempId}`}>{index + 1}</a> </td>
+                <td><a href={`http://localhost:3000/tracker/${user}/${info.tempId}`}>{info.date}</a></td>
+                <td><a href={`http://localhost:3000/tracker/${user}/${info.tempId}`}>{info.income}</a></td>
+                <td><a href={`http://localhost:3000/tracker/${user}/${info.tempId}`}>{info.expense}</a></td>
+                <td><a href={`http://localhost:3000/tracker/${user}/${info.tempId}`}>{info.description}</a></td>
             </tr>
         })
 
         return (
             <html>
+                <head>
+                    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+                </head>
                 <body>
                     <div>
                         <h1>Expense Tracker</h1>
@@ -31,11 +35,6 @@ class Main extends React.Component {
 
                     <div>
                         <div>Balance</div>
-                    </div>
-
-                    <div>
-
-
                     </div>
 
                     <div>
@@ -49,7 +48,6 @@ class Main extends React.Component {
                                 <th>Description</th>
                             </tr>
                             {show}
-
                         </table>
                     </div>
 
@@ -62,24 +60,6 @@ class Main extends React.Component {
                             Description: <input type="text" name="description" /><br />
                             <input type="submit" value="Submit" />
                         </form>
-
-                        {/* <h3>Edit Expenses/Income</h3>
-                        <form method="POST" action={`/tracker/${id}?_method=put`}>
-                            Income: <input type="text" name="income" /><br />
-                            Expenses: <input type="text" name="expense" /><br />
-                            Date: <input type="date" name="date" required /><br />
-                            Description: <input type="text" name="description" /><br />
-                            <input type="submit" value="Submit" />
-                        </form>
-
-                        <h3>Delete Expenses/Income</h3>
-                        <form method="POST" action={`/recipes/${id}?_method=delete`}>
-                            Income: <input type="text" name="income" /><br />
-                            Expenses: <input type="text" name="expense" /><br />
-                            Date: <input type="date" name="date" required /><br />
-                            Description: <input type="text" name="description" /><br />
-                            <input type="submit" value="Submit" />
-                        </form> */}
                     </div>
                 </body>
             </html >

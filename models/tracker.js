@@ -1,7 +1,7 @@
 module.exports = (dbPoolInstance) => {
 
     let showAll = (values, callback) => {
-        let query = `SELECT * FROM expenses INNER JOIN users ON users.id = expenses.users_id WHERE users.username = $1`
+        let query = `SELECT expenses.*, users.username FROM expenses INNER JOIN users ON users.id = expenses.users_id WHERE users.username = $1 ORDER BY expenses.id ASC`
 
         dbPoolInstance.query(query, values, (queryErr, queryResult) => {
             if (queryErr) {
@@ -39,7 +39,7 @@ module.exports = (dbPoolInstance) => {
     }
 
     let editExpense = (values, callback) => {
-        let query = `UPDATE expenses SET date = $1, income = $2, expense = $3, description = $4 WHERE id = RETURNING *`
+        let query = `UPDATE expenses SET date = $1, income = $2, expense = $3, description = $4 WHERE uuid = $5`
 
         dbPoolInstance.query(query, values, (queryErr, queryResult) => {
             if (queryErr) {
@@ -51,7 +51,7 @@ module.exports = (dbPoolInstance) => {
     }
 
     let removeExpense = (values, callback) => {
-        let query = `DELETE FROM expenses WHERE id = $1`
+        let query = `DELETE FROM expenses WHERE uuid = $1`
 
         dbPoolInstance.query(query, values, (queryErr, queryResult) => {
             if (queryErr) {

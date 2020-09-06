@@ -44,33 +44,35 @@ module.exports = (db) => {
     }
 
     let putExpense = (req, res) => {
-        // let id = req.params.id;
+        let returnInfo = req.body;
         let date = returnInfo.date;
         let income = returnInfo.income;
         let expense = returnInfo.expense;
         let description = returnInfo.description;
-        let values = [date, income, expense, description];
+        let uuid = returnInfo.uuid;
+        let values = [date, income, expense, description, uuid];
+        console.log(values);
 
         db.tracker.editExpense(values, (err, result) => {
             if (err) {
                 console.log("-- Error in deleteExpense controller", err.message)
             } else {
                 if (result === true) {
-                    res.redirect("/tracker")
+                    res.redirect(`/tracker/${req.params.user}`)
                 }
             }
         })
     }
 
     let deleteExpense = (req, res) => {
-        let values = [req.params.id];
+        let values = [req.body.uuid];
 
         db.tracker.removeExpense(values, (err, result) => {
             if (err) {
                 console.log("-- Error in deleteExpense controller", err.message)
             } else {
                 if (result === true) {
-                    res.redirect("/tracker")
+                    res.redirect(`/tracker/${req.params.user}`)
                 }
             }
         })
@@ -78,7 +80,21 @@ module.exports = (db) => {
     }
 
     let getSingle = (req, res) => {
+        let values = [req.params.user]
+        let index = parseInt(req.params.id) - 1;
 
+        if (req.cookies.username === req.params.user && req.cookies.loggedIn === `${sha256(req.cookies.username)}-${salt}`) {
+            db.tracker.showAll(values, (err, result) => {
+                if (err) {
+                    console.log("-- Error in main controller", err.message);
+                } else {
+                    result.index = index;
+                    res.render("tracker/single", result)
+                }
+            });
+        } else {
+            res.redirect(`/tracker/${req.params.user}`);
+        }
     }
 
 

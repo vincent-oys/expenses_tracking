@@ -12,7 +12,7 @@ module.exports = (app, allModels) => {
 
   app.get("/tracker/:user", trackerControllerCallbacks.main);
   app.post("/tracker/:user", trackerControllerCallbacks.postExpense);
-  app.get("/tracker/:id", trackerControllerCallbacks.getSingle);
-  app.put("/tracker/:id", trackerControllerCallbacks.putExpense);
-  app.delete("/tracker/:id", trackerControllerCallbacks.deleteExpense);
+  app.get("/tracker/:user/:id", trackerControllerCallbacks.getSingle);
+  app.put("/tracker/:user/:id", trackerControllerCallbacks.putExpense);
+  app.delete("/tracker/:user/:id", trackerControllerCallbacks.deleteExpense);
 };
