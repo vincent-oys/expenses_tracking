@@ -37,6 +37,10 @@ const allUserModelsFunction = require("./models/users");
 
 const userModelsObject = allUserModelsFunction(pool);
 
+const allTrackerModelsFunction = require("./models/tracker");
+
+const userTrackerObject = allTrackerModelsFunction(pool);
+
 module.exports = {
   //make queries directly from here
   queryInterface: (text, params, callback) => {
@@ -50,4 +54,5 @@ module.exports = {
    * ADD APP MODELS HERE
    */
   users: userModelsObject,
+  tracker: userTrackerObject
 };

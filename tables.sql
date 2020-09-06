@@ -14,5 +14,6 @@ IF NOT EXISTS expenses
     date TEXT,
     income INTEGER,
     expense INTEGER,
-    description TEXT
+    description TEXT,
+    uuid TEXT
 );
