@@ -40,15 +40,14 @@ class Main extends React.Component {
             <html>
                 <head>
                     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossOrigin="anonymous" />
-                    <link rel="stylesheet" href="global.css" />
                     <link rel="stylesheet" href="main.css" />
                 </head>
                 <body>
                     <div className="container text-center">
                         <div>
                             <div>
-                                <h2>Expense Tracker</h2>
-                                <h3>Welcome {`${user}`}!</h3>
+                                <h2 style={{ color: "navy" }}>Expense Tracker</h2>
+                                <h3>Welcome <span style={{ color: "orange" }}>{`${user}`}</span>!</h3>
                             </div>
                             <div>
                                 <form method="GET" action={`/logout`}>
@@ -58,7 +57,7 @@ class Main extends React.Component {
                         </div>
 
                         <div>
-                            <p style={{ fontSize: "20px" }}>Balance: <strong>${totalIncome - totalExpense}</strong></p>
+                            <p style={{ fontSize: "20px", marginTop: "5px" }}>Balance: <strong>${totalIncome - totalExpense}</strong></p>
                         </div>
 
                         <div >
@@ -96,7 +95,6 @@ class Main extends React.Component {
                                 <tbody>
                                     {show}
                                 </tbody>
-
                             </table>
                         </div>
 

@@ -34,33 +34,47 @@ class Filter extends React.Component {
         })
 
         return (
-            <div>
-                <div>
-                    {month}
-                </div>
+            <html>
+                <head>
+                    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossOrigin="anonymous" />
+                </head>
+                <body>
+                    <div className="container text-center">
+                        <h3 style={{ color: "navy" }}>{month}</h3>
 
-                <div>
-                    <table className="showExpense">
-                        <tr>
-                            <th>No.</th>
-                            <th>Date</th>
-                            <th>Type</th>
-                            <th>Amount</th>
-                            <th>Description</th>
-                        </tr>
-                        {show}
-                    </table>
-                </div>
+                        <div className="scroll overflow-auto" style={{ maxHeight: "400px" }}>
+                            <table className="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">No.</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Amount</th>
+                                        <th scope="col">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {show}
+                                </tbody>
+                            </table>
+                        </div>
 
-                <div>
-                    <div>Total Income: ${totalIncome}</div>
-                    <div>Total Expense: ${totalExpense}</div>
-                </div>
+                        <div>
+                            <p style={{ fontSize: "20px" }}>Total Income: <span style={{ color: "darkgreen", fontSize: "22px" }}>${totalIncome}</span> </p>
+                            <p style={{ fontSize: "20px" }}> Total Expense: <span style={{ color: "maroon", fontSize: "22px" }}>${totalExpense}</span></p>
+                        </div>
 
-                <form method="GET" action={`/tracker/${info.username}`}>
-                    <input type="submit" value="Back" />
-                </form>
-            </div>
+                        <form method="GET" action={`/tracker/${info.username}`}>
+                            <div className="form-group row">
+                                <div className="col-sm-12">
+                                    <button className="btn btn-secondary btn-block" type="submit">Back</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </body>
+            </html>
+
         )
     }
 }
