@@ -1,25 +1,27 @@
 const React = require("react");
+const moment = require("moment");
 
 class Single extends React.Component {
     render() {
         let index = this.props.index;
         let info = this.props.rows[index];
-        console.log(info)
+
+        let date = moment(info.date).format().substr(0, 10);
 
         return (
             <div>
                 <div>
-                    <table id="showExpense">
+                    <table className="showExpense">
                         <tr>
                             <th>Date</th>
-                            <th>Income</th>
-                            <th>Expense</th>
+                            <th>Type</th>
+                            <th>Amount</th>
                             <th>Description</th>
                         </tr>
                         <tr>
-                            <td>{info.date}</td>
-                            <td>{info.income}</td>
-                            <td>{info.expense}</td>
+                            <td>{date}</td>
+                            <td>{info.type}</td>
+                            <td>{info.amount}</td>
                             <td>{info.description}</td>
                         </tr>
                     </table>
@@ -27,10 +29,15 @@ class Single extends React.Component {
 
                 <div>
                     <form method="POST" action={`/tracker/${info.username}/${index + 1}?_method=PUT`}>
-                        Income: <input type="text" name="income" value={`${info.income}`} /><br />
-                        Expenses: <input type="text" name="expense" value={`${info.expense}`} /><br />
-                        Date: <input type="date" name="date" required /><br />
-                        Description: <input type="text" name="description" value={`${info.description}`} /><br />
+                        <label>Type:</label>
+                        <select name="type" >
+                            <option value="expense">Expense</option>
+                            <option value="income">Income</option>
+                        </select>
+                        <br />
+                        Amount: <input type="text" name="amount" required /><br />
+                        Date: <input type="date" name="date" defaultValue={`${date}`} required /><br />
+                        Description: <input type="text" name="description" /><br />
                         <input type="hidden" name="uuid" value={`${info.uuid}`} />
                         <input type="submit" value="Edit" />
                     </form>

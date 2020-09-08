@@ -23,7 +23,7 @@ module.exports = (dbPoolInstance) => {
                 let userId = queryResult.rows[0].id;
                 values.unshift(userId);
 
-                let queryText = `INSERT INTO expenses (users_id, date, income, expense, description, uuid) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`
+                let queryText = `INSERT INTO expenses (users_id, date, type, amount, description, uuid) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`
 
                 dbPoolInstance.query(queryText, values, (queryErr, queryResult) => {
                     if (queryErr) {
@@ -34,12 +34,10 @@ module.exports = (dbPoolInstance) => {
                 })
             }
         })
-
-
     }
 
     let editExpense = (values, callback) => {
-        let query = `UPDATE expenses SET date = $1, income = $2, expense = $3, description = $4 WHERE uuid = $5`
+        let query = `UPDATE expenses SET date = $1, type = $2, amount = $3, description = $4 WHERE uuid = $5`
 
         dbPoolInstance.query(query, values, (queryErr, queryResult) => {
             if (queryErr) {
@@ -62,10 +60,23 @@ module.exports = (dbPoolInstance) => {
         })
     }
 
+    let filterMonth = (values, callback) => {
+        let query = `SELECT expenses.* FROM expenses INNER JOIN users ON users.id = expenses.users_id WHERE users.username = $1 AND extract(month from expenses.date) = $2`
+
+        dbPoolInstance.query(query, values, (queryErr, queryResult) => {
+            if (queryErr) {
+                console.log("-- Error in filterMonth model", queryErr.message);
+            } else {
+                callback(null, queryResult)
+            }
+        })
+    }
+
     return {
         showAll,
         addExpense,
         editExpense,
-        removeExpense
+        removeExpense,
+        filterMonth
     }
 }

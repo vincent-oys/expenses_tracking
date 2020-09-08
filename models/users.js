@@ -1,5 +1,4 @@
 module.exports = (dbPoolInstance) => {
-  // `dbPoolInstance` is accessible within this function scope
 
   let userLogin = (enteredUsername, enteredPassword, callback) => {
     let query = `select * from users where username=$1`;

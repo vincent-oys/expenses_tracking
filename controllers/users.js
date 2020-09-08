@@ -3,7 +3,6 @@ let salt = sha256("I am awesome");
 
 module.exports = (db) => {
   let welcome = (req, res) => {
-    console.log(req.cookies)
     if (!req.cookies.loggedIn) {
       res.render("users/homepage");
     } else {
@@ -14,8 +13,6 @@ module.exports = (db) => {
   };
 
   let loginPage = (req, res) => {
-    // res.clearCookie("username");
-    // res.clearCookie("loggedIn");
     res.render("users/login");
   };
 

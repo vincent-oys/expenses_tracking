@@ -11,9 +11,16 @@ IF NOT EXISTS expenses
 (
     id SERIAL PRIMARY KEY,
     users_id INTEGER,
-    date TEXT,
-    income INTEGER,
-    expense INTEGER,
+    date DATE,
+    type TEXT,
+    amount INTEGER,
     description TEXT,
-    uuid TEXT
+    uuid TEXT,
+    CONSTRAINT fk_user
+        FOREIGN KEY
+(users_id)
+            REFERENCES users
+(id)
+            ON
+DELETE CASCADE
 );

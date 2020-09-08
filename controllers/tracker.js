@@ -21,16 +21,15 @@ module.exports = (db) => {
         }
     }
 
-
     let postExpense = (req, res) => {
         let returnInfo = req.body;
         let user = [req.params.user];
         let date = returnInfo.date;
-        let income = returnInfo.income || 0;
-        let expense = returnInfo.expense || 0;
+        let type = returnInfo.type;
+        let amount = returnInfo.amount;
         let description = returnInfo.description || "-";
         let uuid = uuidv4()
-        let values = [date, income, expense, description, uuid];
+        let values = [date, type, amount, description, uuid];
 
         db.tracker.addExpense(values, user, (err, result) => {
             if (err) {
@@ -46,11 +45,11 @@ module.exports = (db) => {
     let putExpense = (req, res) => {
         let returnInfo = req.body;
         let date = returnInfo.date;
-        let income = returnInfo.income;
-        let expense = returnInfo.expense;
+        let type = returnInfo.type;
+        let amount = returnInfo.amount;
         let description = returnInfo.description;
         let uuid = returnInfo.uuid;
-        let values = [date, income, expense, description, uuid];
+        let values = [date, type, amount, description, uuid];
         console.log(values);
 
         db.tracker.editExpense(values, (err, result) => {
@@ -97,13 +96,36 @@ module.exports = (db) => {
         }
     }
 
+    let logout = (req, res) => {
+        res.clearCookie("username");
+        res.clearCookie("loggedIn");
+        res.redirect("/")
+    }
+
+    let getFilter = (req, res) => {
+        let values = [req.params.user, req.body.month];
+
+        if (req.cookies.username === req.params.user && req.cookies.loggedIn === `${sha256(req.cookies.username)}-${salt}`) {
+            db.tracker.filterMonth(values, (err, result) => {
+                if (err) {
+                    console.log("-- Error in getFilter controller", err.message);
+                } else {
+                    res.render("tracker/filter", result)
+                }
+            })
+        }
+
+    }
+
 
     return {
         main,
         postExpense,
         putExpense,
         deleteExpense,
-        getSingle
+        getSingle,
+        logout,
+        getFilter
     }
 
 }
