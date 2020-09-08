@@ -4,15 +4,30 @@ class Homepage extends React.Component {
   render() {
     return (
       <html>
+        <head>
+          <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossOrigin="anonymous" />
+          <link rel="stylesheet" href="global.css" />
+          <link rel="stylesheet" href="homepage.css" />
+        </head>
         <body>
-          <h1>Welcome to Expense Tracker</h1>
-          <div>
-            <form method="GET" action="/login">
-              <input type="submit" value="Login" />
-            </form>
-            <form method="GET" action="/signup">
-              <input type="submit" value="Sign Up" />
-            </form>
+
+          <div className="container text-center col-8 ">
+            <h2>Welcome to Expense Tracker</h2>
+          </div>
+
+          <div className="container text-center col-8">
+            <div className="row">
+              <div>
+                <form method="GET" action="/login">
+                  <button className="btn btn-primary" type="submit">Login</button>
+                </form>
+              </div>
+              <div>
+                <form method="GET" action="/signup">
+                  <button className="btn btn-primary" type="submit">Sign Up</button>
+                </form>
+              </div>
+            </div>
           </div>
         </body>
       </html>

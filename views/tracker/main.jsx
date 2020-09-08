@@ -18,7 +18,7 @@ class Main extends React.Component {
             let date = moment(info.date).format().substr(0, 10);
 
             return <tr key={`${index + 1}`}>
-                <td><a href={`/tracker/${user}/${info.tempId}`}>{index + 1}</a> </td>
+                <td scope="row"><a href={`/tracker/${user}/${info.tempId}`}>{index + 1}</a> </td>
                 <td><a href={`/tracker/${user}/${info.tempId}`}>{date}</a></td>
                 <td><a href={`/tracker/${user}/${info.tempId}`}>{info.type}</a></td>
                 <td><a href={`/tracker/${user}/${info.tempId}`}>{info.amount}</a></td>
@@ -36,79 +36,109 @@ class Main extends React.Component {
             }
         })
 
-
         return (
             <html>
                 <head>
                     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossOrigin="anonymous" />
+                    <link rel="stylesheet" href="global.css" />
+                    <link rel="stylesheet" href="main.css" />
                 </head>
                 <body>
-                    <div>
+                    <div className="container text-center">
                         <div>
-                            <h1>Expense Tracker</h1>
-                            <h2>Welcome {`${user}`}!</h2>
+                            <div>
+                                <h2>Expense Tracker</h2>
+                                <h3>Welcome {`${user}`}!</h3>
+                            </div>
+                            <div>
+                                <form method="GET" action={`/logout`}>
+                                    <button className="btn btn-outline-danger" type="submit">Log Out</button>
+                                </form>
+                            </div>
                         </div>
+
                         <div>
-                            <form method="GET" action={`/logout`}>
-                                <input type="submit" value="Log Out" />
+                            <p style={{ fontSize: "20px" }}>Balance: <strong>${totalIncome - totalExpense}</strong></p>
+                        </div>
+
+                        <div >
+                            <form method="post" action={`/tracker/filter/${user}`} >
+                                <label style={{ fontSize: "20px" }}>Filter Expenses by Month:</label>
+                                <select className="form-control w-50" name="month" style={{ margin: "5px auto" }}>
+                                    <option value="1">Jan</option>
+                                    <option value="2">Feb</option>
+                                    <option value="3">Mar</option>
+                                    <option value="4">Apr</option>
+                                    <option value="5">May</option>
+                                    <option value="6">Jun</option>
+                                    <option value="7">Jul</option>
+                                    <option value="8">Aug</option>
+                                    <option value="9">Sep</option>
+                                    <option value="10">Oct</option>
+                                    <option value="11">Nov</option>
+                                    <option value="12">Dec</option>
+                                </select>
+                                <button className="btn btn-info btn-block mt-2 mb-2 w-50" type="submit" style={{ margin: "5px auto" }}>Filter</button>
+                            </form>
+                        </div>
+
+                        <div className="scroll overflow-auto" style={{ maxHeight: "250px" }}>
+                            <table className="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">No.</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Amount</th>
+                                        <th scope="col">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {show}
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                        <div>
+                            <p style={{ fontSize: "20px" }}>Add Expenses/Income</p>
+                            <form method="POST" action={`/tracker/${user}`}>
+                                <div className="form-group row">
+                                    <label htmlFor="inputType" className="col-sm-2 col-form-label">Type</label>
+                                    <div className="col-sm-10">
+                                        <select className="form-control" name="type" >
+                                            <option value="expense">Expense</option>
+                                            <option value="income">Income</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="form-group row">
+                                    <label htmlFor="inputAmount" className="col-sm-2 col-form-label">Amount</label>
+                                    <div className="col-sm-10">
+                                        <input className="form-control" type="text" name="amount" required />
+                                    </div>
+                                </div>
+                                <div className="form-group row">
+                                    <label htmlFor="inputDate" className="col-sm-2 col-form-label">Date</label>
+                                    <div className="col-sm-10">
+                                        <input className="form-control" type="date" name="date" defaultValue={`${today}`} required />
+                                    </div>
+                                </div>
+                                <div className="form-group row">
+                                    <label htmlFor="inputDescription" className="col-sm-2 col-form-label">Description</label>
+                                    <div className="col-sm-10">
+                                        <input className="form-control" type="text" name="description" />
+                                    </div>
+                                </div>
+                                <div className="form-group row">
+                                    <div className="col-sm-10 offset-sm-2">
+                                        <button className="btn btn-primary btn-block" type="submit">Add</button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
 
-                    <div>
-                        <div>Balance: ${totalIncome - totalExpense}</div>
-                    </div>
-
-                    <div>
-                        <div>Filter Expenses by Month</div>
-                        <form method="post" action={`/tracker/filter/${user}`} >
-                            <label>Month:</label>
-                            <select name="month" >
-                                <option value="1">Jan</option>
-                                <option value="2">Feb</option>
-                                <option value="3">Mar</option>
-                                <option value="4">Apr</option>
-                                <option value="5">May</option>
-                                <option value="6">Jun</option>
-                                <option value="7">Jul</option>
-                                <option value="8">Aug</option>
-                                <option value="9">Sep</option>
-                                <option value="10">Oct</option>
-                                <option value="11">Nov</option>
-                                <option value="12">Dec</option>
-                            </select>
-                            <input type="submit" value="Filter" />
-                        </form>
-                    </div>
-
-                    <div>
-                        <table className="showExpense">
-                            <tr>
-                                <th>No.</th>
-                                <th>Date</th>
-                                <th>Type</th>
-                                <th>Amount</th>
-                                <th>Description</th>
-                            </tr>
-                            {show}
-                        </table>
-                    </div>
-
-                    <div>
-                        <h3>Add Expenses/Income</h3>
-                        <form method="POST" action={`/tracker/${user}`}>
-                            <label>Type:</label>
-                            <select name="type" >
-                                <option value="expense">Expense</option>
-                                <option value="income">Income</option>
-                            </select>
-                            <br />
-                            Amount: <input type="text" name="amount" required /><br />
-                            Date: <input type="date" name="date" defaultValue={`${today}`} required /><br />
-                            Description: <input type="text" name="description" /><br />
-                            <input type="submit" value="Submit" />
-                        </form>
-                    </div>
                 </body>
             </html >
         );
