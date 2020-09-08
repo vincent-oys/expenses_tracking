@@ -103,6 +103,9 @@ module.exports = (db) => {
     }
 
     let getFilter = (req, res) => {
+
+        let months = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
         let values = [req.params.user, req.body.month];
 
         if (req.cookies.username === req.params.user && req.cookies.loggedIn === `${sha256(req.cookies.username)}-${salt}`) {
@@ -110,6 +113,7 @@ module.exports = (db) => {
                 if (err) {
                     console.log("-- Error in getFilter controller", err.message);
                 } else {
+                    result.month = months[parseInt(req.body.month) - 1];
                     res.render("tracker/filter", result)
                 }
             })

@@ -2,6 +2,9 @@ const React = require("react");
 
 class Signup extends React.Component {
   render() {
+
+    let message = this.props.message
+
     return (
       <html>
         <body>
@@ -14,8 +17,19 @@ class Signup extends React.Component {
               Password:{" "}
               <input type="password" placeholder="Enter Password" name="password" required />
               <br />
-              <input type="submit" value="Signup" />
+              <div>
+                <input type="submit" value="Signup" />
+              </div>
+              <div>
+                <a href="/login">Login</a>
+              </div>
+              <div>
+                <a href="/">Homepage</a>
+              </div>
             </form>
+          </div>
+          <div>
+            {message}
           </div>
         </body>
       </html>

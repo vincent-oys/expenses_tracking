@@ -20,16 +20,31 @@ module.exports = (dbPoolInstance) => {
     });
   };
 
-  let register = (values, callback) => {
-    let query = `INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *`;
+  let register = (username, password, callback) => {
+    let query = `select * from users where username=$1`;
+    let value = [username];
 
-    dbPoolInstance.query(query, values, (queryErr, queryResult) => {
+    dbPoolInstance.query(query, value, (queryErr, queryResult) => {
       if (queryErr) {
-        console.log("-- Error in register model", queryErr.message);
+        console.log("-- Error in register model first layer", queryErr.message)
       } else {
-        callback(null, queryResult.rows[0]);
+        if (queryResult.rows.length > 0) {
+          callback(null, "user exist")
+        } else {
+          let values = [username, password];
+          let query = `INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *`;
+
+          dbPoolInstance.query(query, values, (queryErr, queryResult) => {
+            if (queryErr) {
+              console.log("-- Error in register model", queryErr.message);
+            } else {
+              callback(null, queryResult.rows[0]);
+            }
+          });
+        }
       }
-    });
+    })
+
   };
 
   return {

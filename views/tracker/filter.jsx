@@ -3,7 +3,7 @@ const moment = require("moment");
 
 class Filter extends React.Component {
     render() {
-        let user = this.props.username;
+        let month = this.props.month;
         let info = this.props.rows;
         let totalExpense = 0;
         let totalIncome = 0;
@@ -35,6 +35,10 @@ class Filter extends React.Component {
 
         return (
             <div>
+                <div>
+                    {month}
+                </div>
+
                 <div>
                     <table className="showExpense">
                         <tr>

@@ -25,9 +25,9 @@ module.exports = (db) => {
         console.log("-- Error in login controller", err.message);
       } else {
         if (result === false) {
-          res.send("User not exist! Please try again");
+          res.render("users/login", { message: "User not exist! Please try again" })
         } else if (result === "wrong password") {
-          res.send("Wrong Password!");
+          res.render("users/login", { message: "Wrong Password!" })
         } else {
           res.cookie("username", result.username);
           res.cookie("loggedIn", `${sha256(result.username)}-${salt}`);
@@ -44,15 +44,18 @@ module.exports = (db) => {
   let postSignup = (req, res) => {
     let { username, password } = req.body;
     password = sha256(password);
-    let values = [username, password];
 
-    db.users.register(values, (err, result) => {
+    db.users.register(username, password, (err, result) => {
       if (err) {
         console.log("-- Error in postSignup controller", err.message);
       } else {
-        res.cookie("username", result.username);
-        res.cookie("loggedIn", `${sha256(result.username)}-${salt}`);
-        res.redirect(`tracker/${result.username}`);
+        if (result === "user exist") {
+          res.render("users/signup", { message: "Username has been taken!" })
+        } else {
+          res.cookie("username", result.username);
+          res.cookie("loggedIn", `${sha256(result.username)}-${salt}`);
+          res.redirect(`tracker/${result.username}`);
+        }
       }
     });
   };
